@@ -1,15 +1,40 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const Login = () => {
     const [currentState, setCurrentState] = useState('Login');
-    const { token, setToken, setUser, navigate, backendUrl } = useContext(ShopContext);
+    const { token, setToken, setUser, navigate, backendUrl, addToCart } = useContext(ShopContext);
+    const location = useLocation();
 
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+
+    const redirectAfterLogin = (userToken, userData) => {
+        setToken(userToken);
+        setUser(userData);
+        localStorage.setItem('token', userToken);
+        localStorage.setItem('user', JSON.stringify(userData));
+        toast.success(currentState === 'Sign Up' ? "Account created successfully!" : "Logged in successfully!");
+
+        const pendingItem = sessionStorage.getItem('pendingCartItem');
+        if (pendingItem) {
+            try {
+                const { itemId, size } = JSON.parse(pendingItem);
+                sessionStorage.removeItem('pendingCartItem');
+                addToCart(itemId, size, userToken);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        const targetPath = location.state?.from || sessionStorage.getItem('redirectPath') || '/';
+        sessionStorage.removeItem('redirectPath');
+        navigate(targetPath);
+    };
 
     const onSubmitHandler = async (event) => {
         event.preventDefault();
@@ -17,24 +42,14 @@ const Login = () => {
             if (currentState === 'Sign Up') {
                 const response = await axios.post(backendUrl + '/api/user/register', { name, email, password });
                 if (response.data.success) {
-                    setToken(response.data.token);
-                    setUser(response.data.user);
-                    localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('user', JSON.stringify(response.data.user));
-                    toast.success("Account created successfully!");
-                    navigate('/');
+                    redirectAfterLogin(response.data.token, response.data.user);
                 } else {
                     toast.error(response.data.message);
                 }
             } else {
                 const response = await axios.post(backendUrl + '/api/user/login', { email, password });
                 if (response.data.success) {
-                    setToken(response.data.token);
-                    setUser(response.data.user);
-                    localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('user', JSON.stringify(response.data.user));
-                    toast.success("Logged in successfully!");
-                    navigate('/');
+                    redirectAfterLogin(response.data.token, response.data.user);
                 } else {
                     toast.error(response.data.message);
                 }
@@ -43,18 +58,15 @@ const Login = () => {
             console.log("Login client catch fallback:", error.message);
             const mockToken = "mock_user_jwt_token_2026";
             const mockUser = { name: name || email.split('@')[0] || "Demo User", email };
-            setToken(mockToken);
-            setUser(mockUser);
-            localStorage.setItem('token', mockToken);
-            localStorage.setItem('user', JSON.stringify(mockUser));
-            toast.success("Logged in successfully!");
-            navigate('/');
+            redirectAfterLogin(mockToken, mockUser);
         }
     };
 
     useEffect(() => {
         if (token) {
-            navigate('/');
+            const targetPath = location.state?.from || sessionStorage.getItem('redirectPath') || '/';
+            sessionStorage.removeItem('redirectPath');
+            navigate(targetPath);
         }
     }, [token]);
 

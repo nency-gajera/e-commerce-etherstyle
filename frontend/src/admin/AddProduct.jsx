@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { UploadCloud } from 'lucide-react';
 
 const AddProduct = ({ token }) => {
-    const { backendUrl, getProductsData } = useContext(ShopContext);
+    const { backendUrl, getProductsData, setAdminToken } = useContext(ShopContext);
 
     const [image1, setImage1] = useState(false);
     const [image2, setImage2] = useState(false);
@@ -51,6 +51,10 @@ const AddProduct = ({ token }) => {
                 getProductsData();
             } else {
                 toast.error(response.data.message);
+                if (response.data.message === "Not Authorized Login Again" || response.data.message.includes("jwt")) {
+                    localStorage.removeItem('adminToken');
+                    setAdminToken('');
+                }
             }
         } catch (error) {
             console.log(error);

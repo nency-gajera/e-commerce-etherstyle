@@ -21,9 +21,18 @@ const ShopContextProvider = (props) => {
     
     const navigate = useNavigate();
 
-    const addToCart = async (itemId, size) => {
+    const addToCart = async (itemId, size, overrideToken = null) => {
+        const activeToken = overrideToken || token || localStorage.getItem('token');
         if (!size) {
             toast.error('Select Product Size');
+            return;
+        }
+
+        if (!activeToken) {
+            toast.info('Please login to add items to cart');
+            sessionStorage.setItem('pendingCartItem', JSON.stringify({ itemId, size }));
+            sessionStorage.setItem('redirectPath', window.location.pathname);
+            navigate('/login', { state: { from: window.location.pathname } });
             return;
         }
 
@@ -42,9 +51,9 @@ const ShopContextProvider = (props) => {
         setCartItems(cartData);
         toast.success("Added to cart!");
 
-        if (token) {
+        if (activeToken) {
             try {
-                await axios.post(backendUrl + '/api/cart/add', { itemId, size }, { headers: { token } });
+                await axios.post(backendUrl + '/api/cart/add', { itemId, size }, { headers: { token: activeToken } });
             } catch (error) {
                 console.log(error);
             }

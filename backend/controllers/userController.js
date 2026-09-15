@@ -115,9 +115,12 @@ const registerUser = async (req, res) => {
 const adminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
+        const adminEmail = process.env.ADMIN_EMAIL || "admin@forever.com";
+        const adminPassword = process.env.ADMIN_PASSWORD || "adminpassword123";
+        const secret = process.env.JWT_SECRET || 'forever_jwt_secret_key_2026_super_secure';
 
-        if (email === (process.env.ADMIN_EMAIL || "admin@forever.com") && password === (process.env.ADMIN_PASSWORD || "adminpassword123")) {
-            const token = jwt.sign(email + password, process.env.JWT_SECRET || 'forever_secret');
+        if (email === adminEmail && password === adminPassword) {
+            const token = jwt.sign(email + password, secret);
             res.json({ success: true, token });
         } else {
             res.json({ success: false, message: "Invalid admin credentials" });

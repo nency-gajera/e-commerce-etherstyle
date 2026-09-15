@@ -116,8 +116,10 @@ const sampleProducts = [
 
 const seedDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/forever');
-        console.log("Connected to MongoDB for Seeding...");
+        if (mongoose.connection.readyState !== 1) {
+            await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/forever');
+        }
+        console.log("Checking MongoDB initial seed...");
         
         const count = await productModel.countDocuments();
         if (count === 0) {

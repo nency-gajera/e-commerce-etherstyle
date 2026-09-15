@@ -11,11 +11,12 @@ const connectDB = async () => {
         
         mongoose.connection.on('error', (err) => {
             isConnected = false;
-            console.log("DB Connection Error (using in-memory fallback):", err.message);
+            console.log("DB Connection Error:", err.message);
         });
 
-        await mongoose.connect(`${process.env.MONGODB_URI}`, {
-            serverSelectionTimeoutMS: 2000
+        const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/forever';
+        await mongoose.connect(mongoUri, {
+            serverSelectionTimeoutMS: 5000
         });
     } catch (error) {
         isConnected = false;
