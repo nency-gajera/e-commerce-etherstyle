@@ -36,7 +36,7 @@ const Cart = () => {
             {cartData.length === 0 ? (
                 <div className="text-center py-16">
                     <p className="text-lg text-gray-500 mb-6">Your shopping cart is currently empty.</p>
-                    <button onClick={() => navigate('/collection')} className="btn-primary">
+                    <button onClick={() => navigate('/collection')} className="btn-primary cursor-pointer">
                         EXPLORE CATALOG
                     </button>
                 </div>

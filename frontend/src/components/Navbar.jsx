@@ -48,16 +48,6 @@ const Navbar = () => {
             {/* Action Buttons */}
             <div className="flex items-center gap-4 sm:gap-6">
                 
-                {/* Admin Switcher Button */}
-                <Link 
-                    to="/admin" 
-                    title="Admin Panel" 
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 text-rose-600 border border-rose-200 rounded-full text-xs font-bold hover:bg-rose-100 transition shadow-xs"
-                >
-                    <ShieldCheck size={15} />
-                    <span>ADMIN</span>
-                </Link>
-
                 {/* Search Icon */}
                 <button onClick={() => { setShowSearch(true); navigate('/collection'); }} className="cursor-pointer text-gray-700 hover:text-black">
                     <Search size={20} />

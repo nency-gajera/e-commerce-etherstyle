@@ -120,6 +120,7 @@ const AddProduct = ({ token }) => {
                         <option value="T-shirts">T-shirts</option>
                         <option value="Shirts">Shirts</option>
                         <option value="Jeans">Jeans</option>
+                        <option value="Dresses">Dresses</option>
                     </select>
                 </div>
                 <div className="flex-1">

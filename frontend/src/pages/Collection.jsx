@@ -112,6 +112,9 @@ const Collection = () => {
                         <label className="flex items-center gap-2 cursor-pointer hover:text-black">
                             <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'Jeans'} onChange={toggleSubCategory} /> Jeans
                         </label>
+                        <label className="flex items-center gap-2 cursor-pointer hover:text-black">
+                            <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'Dresses'} onChange={toggleSubCategory} /> Dresses
+                        </label>
                     </div>
                 </div>
             </div>
