@@ -11,8 +11,8 @@ const adminAuth = async (req, res, next) => {
             return next();
         }
 
-        const secret = process.env.JWT_SECRET || 'forever_jwt_secret_key_2026_super_secure';
-        const expectedAuthStr = (process.env.ADMIN_EMAIL || "admin@forever.com") + (process.env.ADMIN_PASSWORD || "adminpassword123");
+        const secret = process.env.JWT_SECRET || 'etherstyle_jwt_secret_key_2026_super_secure';
+        const expectedAuthStr = (process.env.ADMIN_EMAIL || "admin@etherstyle.com") + (process.env.ADMIN_PASSWORD || "adminpassword123");
 
         const token_decode = jwt.verify(token, secret);
         if (token_decode !== expectedAuthStr) {

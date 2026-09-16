@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 const inMemoryUsers = [];
 
 const createToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET || 'forever_secret');
+    return jwt.sign({ id }, process.env.JWT_SECRET || 'etherstyle_jwt_secret_key_2026_super_secure');
 }
 
 // Route for user login
@@ -115,9 +115,9 @@ const registerUser = async (req, res) => {
 const adminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const adminEmail = process.env.ADMIN_EMAIL || "admin@forever.com";
+        const adminEmail = process.env.ADMIN_EMAIL || "admin@etherstyle.com";
         const adminPassword = process.env.ADMIN_PASSWORD || "adminpassword123";
-        const secret = process.env.JWT_SECRET || 'forever_jwt_secret_key_2026_super_secure';
+        const secret = process.env.JWT_SECRET || 'etherstyle_jwt_secret_key_2026_super_secure';
 
         if (email === adminEmail && password === adminPassword) {
             const token = jwt.sign(email + password, secret);
@@ -132,4 +132,18 @@ const adminLogin = async (req, res) => {
     }
 }
 
-export { loginUser, registerUser, adminLogin };
+// Function to list all registered members for Admin Panel
+const listUsers = async (req, res) => {
+    try {
+        if (mongoose.connection.readyState === 1) {
+            const users = await userModel.find({}).select("-password");
+            return res.json({ success: true, users });
+        }
+        res.json({ success: true, users: inMemoryUsers.map(u => ({ _id: u._id, name: u.name, email: u.email })) });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+export { loginUser, registerUser, adminLogin, listUsers };

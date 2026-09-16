@@ -14,7 +14,7 @@ const connectDB = async () => {
             console.log("DB Connection Error:", err.message);
         });
 
-        const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/forever';
+        const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/etherstyle';
         await mongoose.connect(mongoUri, {
             serverSelectionTimeoutMS: 5000
         });

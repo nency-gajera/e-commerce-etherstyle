@@ -104,13 +104,13 @@ const Collection = () => {
                     <p className="mb-3 text-xs font-bold uppercase tracking-wider text-gray-800">TYPE</p>
                     <div className="flex flex-col gap-2.5 text-sm font-light text-gray-700">
                         <label className="flex items-center gap-2 cursor-pointer hover:text-black">
-                            <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'Topwear'} onChange={toggleSubCategory} /> Topwear
+                            <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'T-shirts'} onChange={toggleSubCategory} /> T-Shirts
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer hover:text-black">
-                            <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'Bottomwear'} onChange={toggleSubCategory} /> Bottomwear
+                            <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'Shirts'} onChange={toggleSubCategory} /> Shirts
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer hover:text-black">
-                            <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'Winterwear'} onChange={toggleSubCategory} /> Winterwear
+                            <input className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" type="checkbox" value={'Jeans'} onChange={toggleSubCategory} /> Jeans
                         </label>
                     </div>
                 </div>

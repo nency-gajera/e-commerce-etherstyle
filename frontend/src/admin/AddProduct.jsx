@@ -16,7 +16,7 @@ const AddProduct = ({ token }) => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("Men");
-    const [subCategory, setSubCategory] = useState("Topwear");
+    const [subCategory, setSubCategory] = useState("T-shirts");
     const [bestseller, setBestseller] = useState(false);
     const [sizes, setSizes] = useState([]);
 
@@ -117,13 +117,13 @@ const AddProduct = ({ token }) => {
                 <div className="flex-1">
                     <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Sub Category</p>
                     <select onChange={(e) => setSubCategory(e.target.value)} className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm bg-white outline-none">
-                        <option value="Topwear">Topwear</option>
-                        <option value="Bottomwear">Bottomwear</option>
-                        <option value="Winterwear">Winterwear</option>
+                        <option value="T-shirts">T-shirts</option>
+                        <option value="Shirts">Shirts</option>
+                        <option value="Jeans">Jeans</option>
                     </select>
                 </div>
                 <div className="flex-1">
-                    <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Price ($)</p>
+                    <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Price (₹)</p>
                     <input onChange={(e) => setPrice(e.target.value)} value={price} type="number" placeholder="25" required className="w-full px-3.5 py-2.5 border border-gray-300 rounded-md outline-none text-sm bg-white" />
                 </div>
             </div>

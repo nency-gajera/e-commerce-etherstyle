@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlusCircle, List, ShoppingBag } from 'lucide-react';
+import { PlusCircle, List, ShoppingBag, Users } from 'lucide-react';
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
     return (
@@ -27,6 +27,14 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             >
                 <ShoppingBag size={18} className="shrink-0" />
                 <span className="hidden sm:inline">Orders</span>
+            </button>
+
+            <button 
+                onClick={() => setActiveTab('users')} 
+                className={`flex items-center gap-3 border px-3 sm:px-4 py-2.5 rounded-lg transition cursor-pointer ${activeTab === 'users' ? 'bg-rose-50 border-rose-500 text-rose-600' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+            >
+                <Users size={18} className="shrink-0" />
+                <span className="hidden sm:inline">Members</span>
             </button>
         </div>
     );

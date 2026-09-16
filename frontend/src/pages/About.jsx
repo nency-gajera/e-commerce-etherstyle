@@ -13,14 +13,14 @@ const About = () => {
             <div className="my-10 flex flex-col md:flex-row gap-16 items-center">
                 <img 
                     src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80" 
-                    alt="About Forever" 
+                    alt="About Etherstyle" 
                     className="w-full md:max-w-[450px] rounded-2xl object-cover shadow-sm" 
                 />
                 <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600 text-sm sm:text-base leading-relaxed">
-                    <p>Forever was born out of a passion for innovation and an unyielding desire to revolutionize the online fashion shopping experience. Our journey began with a simple idea: to provide a platform where customers can effortlessly discover, explore, and purchase top-tier apparel from the comfort of their homes.</p>
+                    <p>Etherstyle was born out of a passion for innovation and an unyielding desire to revolutionize the online fashion shopping experience. Our journey began with a simple idea: to provide a platform where customers can effortlessly discover, explore, and purchase top-tier apparel from the comfort of their homes.</p>
                     <p>Since our inception, we have worked tirelessly to curate a diverse selection of high-quality products that cater to every fashion preference. From timeless staples to trendsetting designs, our collections are crafted with precision and care.</p>
                     <b className="text-gray-800 text-lg font-serif">Our Mission</b>
-                    <p>Our mission at Forever is to empower individuals through style, offering a seamless, secure, and delightful shopping journey backed by extraordinary customer care.</p>
+                    <p>Our mission at Etherstyle is to empower individuals through style, offering a seamless, secure, and delightful shopping journey backed by extraordinary customer care.</p>
                 </div>
             </div>
 

@@ -17,7 +17,7 @@ const AdminNavbar = ({ setAdminToken }) => {
                 </Link>
                 <span className="text-gray-300">|</span>
                 <span className="font-serif text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                    FOREVER <span className="text-[10px] bg-rose-600 text-white px-2 py-0.5 rounded-md font-sans tracking-wider uppercase font-bold">ADMIN PANEL</span>
+                    ETHERSTYLE <span className="text-[10px] bg-rose-600 text-white px-2 py-0.5 rounded-md font-sans tracking-wider uppercase font-bold">ADMIN PANEL</span>
                 </span>
             </div>
 

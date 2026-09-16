@@ -5,6 +5,7 @@ import Sidebar from '../admin/Sidebar';
 import AddProduct from '../admin/AddProduct';
 import ListProducts from '../admin/ListProducts';
 import AdminOrders from '../admin/AdminOrders';
+import AdminUsers from '../admin/AdminUsers';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ShieldCheck } from 'lucide-react';
@@ -13,7 +14,7 @@ const Admin = () => {
     const { adminToken, setAdminToken, backendUrl } = useContext(ShopContext);
     const [activeTab, setActiveTab] = useState('add');
 
-    const [email, setEmail] = useState('admin@forever.com');
+    const [email, setEmail] = useState('admin@etherstyle.com');
     const [password, setPassword] = useState('adminpassword123');
 
     const onAdminLogin = async (e) => {
@@ -75,6 +76,7 @@ const Admin = () => {
                     {activeTab === 'add' && <AddProduct token={adminToken} />}
                     {activeTab === 'list' && <ListProducts token={adminToken} />}
                     {activeTab === 'orders' && <AdminOrders token={adminToken} />}
+                    {activeTab === 'users' && <AdminUsers token={adminToken} />}
                 </div>
             </div>
         </div>

@@ -22,6 +22,7 @@ connectCloudinary();
 // Middlewares
 app.use(express.json());
 app.use(cors());
+app.use('/uploads', express.static('uploads'));
 
 // API Endpoints
 app.use('/api/user', userRouter);
@@ -30,7 +31,7 @@ app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
 
 app.get('/', (req, res) => {
-    res.send("Forever E-Commerce API Working");
+    res.send("Etherstyle E-Commerce API Working");
 });
 
 app.listen(port, () => console.log('Server started on PORT: ' + port));

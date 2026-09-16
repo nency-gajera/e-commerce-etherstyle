@@ -15,43 +15,24 @@ const Orders = () => {
             const response = await axios.post(backendUrl + '/api/order/userorders', {}, { headers: { token } });
             if (response.data.success) {
                 let allOrdersItem = [];
-                response.data.orders.map((order) => {
-                    order.items.map((item) => {
-                        item['status'] = order.status;
-                        item['payment'] = order.payment;
-                        item['paymentMethod'] = order.paymentMethod;
-                        item['date'] = order.date;
-                        allOrdersItem.push(item);
-                    });
+                response.data.orders.forEach((order) => {
+                    if (Array.isArray(order.items)) {
+                        order.items.forEach((item) => {
+                            allOrdersItem.push({
+                                ...item,
+                                status: order.status,
+                                payment: order.payment,
+                                paymentMethod: order.paymentMethod,
+                                date: order.date
+                            });
+                        });
+                    }
                 });
                 setOrderData(allOrdersItem.reverse());
             }
         } catch (error) {
-            console.log("Using sample order item history");
-            setOrderData([
-                {
-                    _id: "order_101",
-                    name: "Women Round Neck Cotton Top",
-                    price: 100,
-                    size: "M",
-                    quantity: 1,
-                    image: ["https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=80"],
-                    status: "Order Placed",
-                    paymentMethod: "COD",
-                    date: Date.now() - 86400000
-                },
-                {
-                    _id: "order_102",
-                    name: "Men Round Neck Pure Cotton T-shirt",
-                    price: 200,
-                    size: "L",
-                    quantity: 2,
-                    image: ["https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80"],
-                    status: "Shipped",
-                    paymentMethod: "Stripe",
-                    date: Date.now() - 172800000
-                }
-            ]);
+            console.log("Error loading orders:", error);
+            setOrderData([]);
         }
     };
 

@@ -20,8 +20,8 @@ const Navbar = () => {
             
             {/* Brand Logo */}
             <Link to='/' className="flex items-center gap-1">
-                <span className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-                    FOREVER<span className="text-rose-600">.</span>
+                <span className="font-serif text-2xl font-bold text-gray-900">
+                    ETHERSTYLE<span className="text-rose-600">.</span>
                 </span>
             </Link>
 
@@ -99,7 +99,7 @@ const Navbar = () => {
             <div className={`fixed top-0 right-0 bottom-0 overflow-hidden bg-white z-50 transition-all ${visible ? 'w-full px-6 py-5' : 'w-0'}`}>
                 <div className="flex flex-col text-gray-700 h-full">
                     <div onClick={() => setVisible(false)} className="flex items-center justify-between py-2 border-b border-gray-200 cursor-pointer">
-                        <span className="font-serif text-xl font-bold">FOREVER.</span>
+                        <span className="font-serif text-xl font-bold">ETHERSTYLE.</span>
                         <X size={24} />
                     </div>
                     <div className="flex flex-col gap-4 mt-6 text-base font-semibold uppercase">

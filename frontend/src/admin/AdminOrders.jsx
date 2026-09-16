@@ -14,11 +14,11 @@ const AdminOrders = ({ token }) => {
             if (response.data.success) {
                 setOrders(response.data.orders.reverse());
             } else {
-                setOrders(sampleOrders);
+                setOrders([]);
             }
         } catch (error) {
             console.log(error);
-            setOrders(sampleOrders);
+            setOrders([]);
         }
     };
 
@@ -38,22 +38,6 @@ const AdminOrders = ({ token }) => {
             toast.success("Order status updated!");
         }
     };
-
-    const sampleOrders = [
-        {
-            _id: "order_99",
-            items: [
-                { name: "Women Round Neck Cotton Top", quantity: 1, size: "M" },
-                { name: "Men Relaxed Fit Denim Jacket", quantity: 1, size: "L" }
-            ],
-            address: { firstName: "Jane", lastName: "Doe", street: "123 Fashion Street", city: "New York", state: "NY", zipcode: "10001", country: "USA", phone: "+1 555-0199" },
-            amount: 260,
-            paymentMethod: "COD",
-            payment: false,
-            date: Date.now() - 3600000,
-            status: "Order Placed"
-        }
-    ];
 
     useEffect(() => {
         fetchAllOrders();

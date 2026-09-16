@@ -13,7 +13,7 @@ const Contact = () => {
             <div className="my-10 flex flex-col justify-center md:flex-row gap-10 mb-28 items-center">
                 <img 
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80" 
-                    alt="Contact Forever" 
+                    alt="Contact Etherstyle" 
                     className="w-full md:max-w-[450px] rounded-2xl object-cover shadow-sm" 
                 />
                 <div className="flex flex-col justify-center items-start gap-6 text-gray-600 text-sm">
@@ -24,10 +24,10 @@ const Contact = () => {
                     </p>
                     <p className="text-gray-500 leading-relaxed">
                         Tel: (415) 555-0132 <br />
-                        Email: admin@forever.com
+                        Email: admin@etherstyle.com
                     </p>
                     
-                    <p className="font-bold text-lg text-gray-800">Careers at Forever</p>
+                    <p className="font-bold text-lg text-gray-800">Careers at Etherstyle</p>
                     <p className="text-gray-500">Learn more about our teams and job openings.</p>
                     <button className="border border-black px-8 py-3.5 text-xs font-semibold uppercase tracking-wider rounded-md hover:bg-black hover:text-white transition cursor-pointer">
                         EXPLORE JOBS

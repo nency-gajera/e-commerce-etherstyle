@@ -16,19 +16,21 @@ const addProduct = async (req, res) => {
         let imagesUrl = [];
 
         try {
-            imagesUrl = await Promise.all(
-                images.map(async (item) => {
-                    let result = await cloudinary.uploader.upload(item.path, { resource_type: 'image' });
-                    return result.secure_url;
-                })
-            );
-        } catch (uploadError) {
-            console.log("Cloudinary upload fallback:", uploadError.message);
-            // Fallback placeholder images if Cloudinary key is unconfigured
-            imagesUrl = images.map((_, idx) => `https://picsum.photos/seed/${Date.now() + idx}/600/750`);
-            if (imagesUrl.length === 0) {
-                imagesUrl = ["https://picsum.photos/seed/forever1/600/750"];
+            if (process.env.CLOUDINARY_NAME && process.env.CLOUDINARY_NAME !== 'sample_cloud') {
+                imagesUrl = await Promise.all(
+                    images.map(async (item) => {
+                        let result = await cloudinary.uploader.upload(item.path, { resource_type: 'image' });
+                        return result.secure_url;
+                    })
+                );
+            } else {
+                const host = req.protocol + '://' + req.get('host');
+                imagesUrl = images.map((item) => `${host}/uploads/${item.filename}`);
             }
+        } catch (uploadError) {
+            console.log("Cloudinary upload fallback to local storage:", uploadError.message);
+            const host = req.protocol + '://' + req.get('host');
+            imagesUrl = images.map((item) => item.filename ? `${host}/uploads/${item.filename}` : `https://picsum.photos/seed/${Date.now()}/600/750`);
         }
 
         const productData = {
@@ -39,7 +41,7 @@ const addProduct = async (req, res) => {
             subCategory,
             bestseller: bestseller === "true" || bestseller === true ? true : false,
             sizes: JSON.parse(sizes),
-            image: imagesUrl.length > 0 ? imagesUrl : ["https://picsum.photos/seed/forever1/600/750"],
+            image: imagesUrl.length > 0 ? imagesUrl : ["https://picsum.photos/seed/etherstyle1/600/750"],
             date: Date.now()
         };
 

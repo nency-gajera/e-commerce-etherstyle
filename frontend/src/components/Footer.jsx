@@ -9,10 +9,10 @@ const Footer = () => {
                 {/* Brand Info */}
                 <div>
                     <span className="font-serif text-2xl font-bold text-gray-900">
-                        FOREVER<span className="text-rose-600">.</span>
+                        ETHERSTYLE<span className="text-rose-600">.</span>
                     </span>
                     <p className="mt-4 text-gray-500 max-w-md leading-relaxed">
-                        Forever was crafted to inspire individuality and modern elegance through sustainable, premium clothing designed for every occasion.
+                        Etherstyle was crafted to inspire individuality and modern elegance through sustainable, premium clothing designed for every occasion.
                     </p>
                 </div>
 
@@ -32,14 +32,14 @@ const Footer = () => {
                     <p className="font-bold text-gray-900 mb-4 uppercase tracking-wider text-xs">GET IN TOUCH</p>
                     <ul className="flex flex-col gap-2">
                         <li>+1-212-456-7890</li>
-                        <li>contact@foreveryou.com</li>
-                        <li>Instagram: @forever_fashion</li>
+                        <li>contact@etherstyle.com</li>
+                        <li>Instagram: @etherstyle_fashion</li>
                     </ul>
                 </div>
             </div>
 
             <div className="border-t border-gray-100 pt-6 text-center text-xs text-gray-400">
-                <p>Copyright 2026 @ forever.com - All Rights Reserved.</p>
+                <p>Copyright 2026 @ etherstyle.com - All Rights Reserved.</p>
             </div>
         </footer>
     );

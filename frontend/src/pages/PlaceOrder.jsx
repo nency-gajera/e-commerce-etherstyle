@@ -66,16 +66,12 @@ const PlaceOrder = () => {
                 toast.success(response.data.message || "Order Placed!");
                 navigate('/orders');
             } else {
-                setCartItems({});
-                toast.success("Order Placed Successfully!");
-                navigate('/orders');
+                toast.error(response?.data?.message || "Failed to place order");
             }
 
         } catch (error) {
             console.log(error);
-            setCartItems({});
-            toast.success("Order Placed Successfully!");
-            navigate('/orders');
+            toast.error("Failed to place order");
         }
     };
 

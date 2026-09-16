@@ -1,7 +1,7 @@
 {
-  "name": "forever-backend",
+  "name": "etherstyle-backend",
   "version": "1.0.0",
-  "description": "Forever E-Commerce Backend REST API",
+  "description": "Etherstyle E-Commerce Backend REST API",
   "main": "server.js",
   "type": "module",
   "scripts": {

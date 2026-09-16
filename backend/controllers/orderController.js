@@ -2,6 +2,7 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from 'stripe';
 import razorpay from 'razorpay';
+import mongoose from 'mongoose';
 
 // Global variables / Gateway initialization
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy');
@@ -29,7 +30,9 @@ const placeOrder = async (req, res) => {
         const newOrder = new orderModel(orderData);
         await newOrder.save();
 
-        await userModel.findByIdAndUpdate(userId, { cartData: {} });
+        if (mongoose.Types.ObjectId.isValid(userId)) {
+            await userModel.findByIdAndUpdate(userId, { cartData: {} });
+        }
 
         res.json({ success: true, message: "Order Placed Successfully" });
 
@@ -57,7 +60,9 @@ const placeOrderStripe = async (req, res) => {
         const newOrder = new orderModel(orderData);
         await newOrder.save();
 
-        await userModel.findByIdAndUpdate(userId, { cartData: {} });
+        if (mongoose.Types.ObjectId.isValid(userId)) {
+            await userModel.findByIdAndUpdate(userId, { cartData: {} });
+        }
 
         res.json({ success: true, message: "Stripe Order Placed Successfully" });
 
@@ -85,7 +90,9 @@ const placeOrderRazorpay = async (req, res) => {
         const newOrder = new orderModel(orderData);
         await newOrder.save();
 
-        await userModel.findByIdAndUpdate(userId, { cartData: {} });
+        if (mongoose.Types.ObjectId.isValid(userId)) {
+            await userModel.findByIdAndUpdate(userId, { cartData: {} });
+        }
 
         res.json({ success: true, message: "Razorpay Order Placed Successfully" });
 

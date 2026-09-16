@@ -117,7 +117,7 @@ const sampleProducts = [
 const seedDB = async () => {
     try {
         if (mongoose.connection.readyState !== 1) {
-            await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/forever');
+            await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/etherstyle');
         }
         console.log("Checking MongoDB initial seed...");
         
