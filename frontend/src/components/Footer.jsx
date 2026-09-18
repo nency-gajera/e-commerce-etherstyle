@@ -39,7 +39,7 @@ const Footer = () => {
             </div>
 
             <div className="border-t border-gray-100 pt-6 text-center text-xs text-gray-400">
-                <p>Copyright 2026 @ etherstyle.com - All Rights Reserved.</p>
+                <p> &copy; {new Date().getFullYear()} Etherstyle.com - All Rights Reserved.</p>
             </div>
         </footer>
     );

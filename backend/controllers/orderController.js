@@ -3,6 +3,7 @@ import userModel from "../models/userModel.js";
 import Stripe from 'stripe';
 import razorpay from 'razorpay';
 import mongoose from 'mongoose';
+import { sendOrderConfirmationEmail } from "../config/emailService.js";
 
 // Global variables / Gateway initialization
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy');
@@ -12,10 +13,16 @@ const razorpayInstance = new razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET || 'secret_dummy'
 });
 
+// Helper for 5-day delivery calculation (5 days = 5 * 24 * 60 * 60 * 1000 ms)
+const FIVE_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
+
 // Placing orders using COD Method
 const placeOrder = async (req, res) => {
     try {
         const { userId, items, amount, address } = req.body;
+
+        const now = Date.now();
+        const deliveryDate = now + FIVE_DAYS_MS;
 
         const orderData = {
             userId,
@@ -24,7 +31,8 @@ const placeOrder = async (req, res) => {
             amount,
             paymentMethod: "COD",
             payment: false,
-            date: Date.now()
+            date: now,
+            deliveryDate: deliveryDate
         };
 
         const newOrder = new orderModel(orderData);
@@ -33,6 +41,9 @@ const placeOrder = async (req, res) => {
         if (mongoose.Types.ObjectId.isValid(userId)) {
             await userModel.findByIdAndUpdate(userId, { cartData: {} });
         }
+
+        // Trigger confirmation email
+        sendOrderConfirmationEmail(orderData);
 
         res.json({ success: true, message: "Order Placed Successfully" });
 
@@ -47,6 +58,9 @@ const placeOrderStripe = async (req, res) => {
     try {
         const { userId, items, amount, address } = req.body;
 
+        const now = Date.now();
+        const deliveryDate = now + FIVE_DAYS_MS;
+
         const orderData = {
             userId,
             items,
@@ -54,7 +68,8 @@ const placeOrderStripe = async (req, res) => {
             amount,
             paymentMethod: "Stripe",
             payment: true, // Auto-mark paid for demo/test mode
-            date: Date.now()
+            date: now,
+            deliveryDate: deliveryDate
         };
 
         const newOrder = new orderModel(orderData);
@@ -63,6 +78,9 @@ const placeOrderStripe = async (req, res) => {
         if (mongoose.Types.ObjectId.isValid(userId)) {
             await userModel.findByIdAndUpdate(userId, { cartData: {} });
         }
+
+        // Trigger confirmation email
+        sendOrderConfirmationEmail(orderData);
 
         res.json({ success: true, message: "Stripe Order Placed Successfully" });
 
@@ -77,6 +95,9 @@ const placeOrderRazorpay = async (req, res) => {
     try {
         const { userId, items, amount, address } = req.body;
 
+        const now = Date.now();
+        const deliveryDate = now + FIVE_DAYS_MS;
+
         const orderData = {
             userId,
             items,
@@ -84,7 +105,8 @@ const placeOrderRazorpay = async (req, res) => {
             amount,
             paymentMethod: "Razorpay",
             payment: true, // Auto-mark paid for demo/test mode
-            date: Date.now()
+            date: now,
+            deliveryDate: deliveryDate
         };
 
         const newOrder = new orderModel(orderData);
@@ -93,6 +115,9 @@ const placeOrderRazorpay = async (req, res) => {
         if (mongoose.Types.ObjectId.isValid(userId)) {
             await userModel.findByIdAndUpdate(userId, { cartData: {} });
         }
+
+        // Trigger confirmation email
+        sendOrderConfirmationEmail(orderData);
 
         res.json({ success: true, message: "Razorpay Order Placed Successfully" });
 

@@ -17,46 +17,43 @@ const loginUser = async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.json({ success: false, message: "Please provide email and password" });
+            return res.json({ success: false, message: "Please enter both email and password." });
         }
+
+        const normalizedEmail = email.toLowerCase().trim();
 
         // Try MongoDB if connected
         if (mongoose.connection.readyState === 1) {
-            const user = await userModel.findOne({ email });
-            if (user) {
-                const isMatch = await bcrypt.compare(password, user.password);
-                if (isMatch) {
-                    const token = createToken(user._id);
-                    return res.json({ success: true, token, user: { name: user.name, email: user.email } });
-                } else {
-                    return res.json({ success: false, message: "Invalid credentials" });
-                }
+            const user = await userModel.findOne({ email: normalizedEmail });
+            if (!user) {
+                return res.json({ success: false, message: "No account found with this email. Please sign up first." });
             }
+
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
+                return res.json({ success: false, message: "Incorrect password. Please try again." });
+            }
+
+            const token = createToken(user._id);
+            return res.json({ success: true, token, user: { id: user._id, name: user.name, email: user.email } });
         }
 
         // Check in-memory fallback
-        const memoryUser = inMemoryUsers.find(u => u.email === email);
+        const memoryUser = inMemoryUsers.find(u => u.email.toLowerCase() === normalizedEmail);
         if (memoryUser) {
             const isMatch = await bcrypt.compare(password, memoryUser.password);
-            if (isMatch) {
-                const token = createToken(memoryUser._id);
-                return res.json({ success: true, token, user: { name: memoryUser.name, email: memoryUser.email } });
-            } else {
-                return res.json({ success: false, message: "Invalid credentials" });
+            if (!isMatch) {
+                return res.json({ success: false, message: "Incorrect password. Please try again." });
             }
+            const token = createToken(memoryUser._id);
+            return res.json({ success: true, token, user: { id: memoryUser._id, name: memoryUser.name, email: memoryUser.email } });
         }
 
-        // If user not found in standalone mode, auto-login for seamless UX
-        const fallbackId = "user_" + Date.now();
-        const token = createToken(fallbackId);
-        const fallbackUser = { name: email.split('@')[0], email };
-        return res.json({ success: true, token, user: fallbackUser, message: "Logged in successfully" });
+        return res.json({ success: false, message: "No account found with this email. Please sign up first." });
 
     } catch (error) {
         console.log("Login Exception:", error.message);
-        const fallbackId = "user_" + Date.now();
-        const token = createToken(fallbackId);
-        res.json({ success: true, token, user: { name: req.body.email ? req.body.email.split('@')[0] : "User", email: req.body.email } });
+        return res.json({ success: false, message: "Login failed: " + error.message });
     }
 }
 
@@ -66,48 +63,53 @@ const registerUser = async (req, res) => {
         const { name, email, password } = req.body;
 
         if (!name || !email || !password) {
-            return res.json({ success: false, message: "Please fill all fields" });
+            return res.json({ success: false, message: "Please fill in all required fields." });
         }
 
         if (!validator.isEmail(email)) {
-            return res.json({ success: false, message: "Please enter a valid email" });
+            return res.json({ success: false, message: "Please enter a valid email address." });
         }
 
         if (password.length < 6) {
-            return res.json({ success: false, message: "Please enter a password of at least 6 characters" });
+            return res.json({ success: false, message: "Password must be at least 6 characters long." });
         }
+
+        const normalizedEmail = email.toLowerCase().trim();
 
         // Try MongoDB if connected
         if (mongoose.connection.readyState === 1) {
-            const exists = await userModel.findOne({ email });
+            const exists = await userModel.findOne({ email: normalizedEmail });
             if (exists) {
-                return res.json({ success: false, message: "User already exists" });
+                return res.json({ success: false, message: "An account with this email already exists. Please sign in instead." });
             }
 
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
-            const newUser = new userModel({ name, email, password: hashedPassword });
+            const newUser = new userModel({ name: name.trim(), email: normalizedEmail, password: hashedPassword });
             const user = await newUser.save();
             const token = createToken(user._id);
 
-            return res.json({ success: true, token, user: { name: user.name, email: user.email } });
+            return res.json({ success: true, token, user: { id: user._id, name: user.name, email: user.email } });
         }
 
         // Fallback in-memory storage
+        const existsInMemory = inMemoryUsers.find(u => u.email.toLowerCase() === normalizedEmail);
+        if (existsInMemory) {
+            return res.json({ success: false, message: "An account with this email already exists. Please sign in instead." });
+        }
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const memUser = { _id: "mem_" + Date.now(), name, email, password: hashedPassword };
+        const memUser = { _id: "mem_" + Date.now(), name: name.trim(), email: normalizedEmail, password: hashedPassword };
         inMemoryUsers.push(memUser);
         const token = createToken(memUser._id);
 
-        res.json({ success: true, token, user: { name, email }, message: "Registered successfully" });
+        return res.json({ success: true, token, user: { id: memUser._id, name: memUser.name, email: memUser.email }, message: "Registered successfully" });
 
     } catch (error) {
         console.log("Register Exception:", error.message);
-        const memUser = { name: req.body.name || "New User", email: req.body.email };
-        const token = createToken("user_" + Date.now());
-        res.json({ success: true, token, user: memUser });
+        return res.json({ success: false, message: "Registration failed: " + error.message });
     }
 }
 

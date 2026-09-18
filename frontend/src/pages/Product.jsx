@@ -66,10 +66,21 @@ const Product = () => {
                         <p className="pl-2 text-gray-500 text-xs">(122 reviews)</p>
                     </div>
 
-                    {/* Price */}
-                    <p className="mt-5 text-3xl font-bold text-gray-900">
-                        {currency}{productData.price}
-                    </p>
+                    {/* Price & Stock Badge */}
+                    <div className="flex items-center gap-4 mt-5">
+                        <p className="text-3xl font-bold text-gray-900">
+                            {currency}{productData.price}
+                        </p>
+                        {((productData.stock !== undefined && productData.stock <= 0) || productData.inStock === false) ? (
+                            <span className="bg-rose-100 text-rose-700 font-bold text-xs px-3 py-1 rounded-full border border-rose-200 uppercase tracking-wider">
+                                Out of Stock
+                            </span>
+                        ) : (
+                            <span className="bg-emerald-50 text-emerald-700 font-semibold text-xs px-3 py-1 rounded-full border border-emerald-200">
+                                In Stock ({productData.stock !== undefined ? productData.stock : 10} available)
+                            </span>
+                        )}
+                    </div>
 
                     {/* Description */}
                     <p className="mt-5 text-gray-600 text-sm leading-relaxed max-w-xl">
@@ -79,26 +90,50 @@ const Product = () => {
                     {/* Select Size */}
                     <div className="flex flex-col gap-4 my-8">
                         <p className="font-semibold text-xs uppercase tracking-wider text-gray-800">Select Size</p>
-                        <div className="flex gap-2">
-                            {productData.sizes.map((item, index) => (
-                                <button 
-                                    onClick={() => setSize(item)} 
-                                    key={index} 
-                                    className={`border py-2 px-4 rounded-md font-semibold text-sm cursor-pointer transition ${size === item ? 'border-black bg-black text-white' : 'border-gray-300 bg-gray-50 text-gray-800 hover:bg-gray-100'}`}
-                                >
-                                    {item}
-                                </button>
-                            ))}
+                        <div className="flex flex-wrap items-center gap-2.5">
+                            {['S', 'M', 'L', 'XL', 'XXL'].map((item) => {
+                                const isAvailable = productData.sizes && productData.sizes.includes(item);
+                                if (isAvailable) {
+                                    return (
+                                        <button 
+                                            onClick={() => setSize(item)} 
+                                            key={item} 
+                                            className={`border py-2.5 px-4 rounded-xl font-semibold text-sm cursor-pointer transition shadow-2xs ${size === item ? 'border-black bg-black text-white' : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50'}`}
+                                        >
+                                            {item}
+                                        </button>
+                                    );
+                                } else {
+                                    return (
+                                        <div 
+                                            key={item} 
+                                            title="Size Unavailable"
+                                            className="border border-dashed border-gray-300 bg-gray-100/80 text-gray-400 font-semibold text-sm py-2.5 px-4 rounded-xl relative overflow-hidden select-none cursor-not-allowed flex items-center justify-center min-w-[48px]"
+                                        >
+                                            <span className="line-through opacity-70">{item}</span>
+                                        </div>
+                                    );
+                                }
+                            })}
                         </div>
                     </div>
 
                     {/* Add to Cart CTA */}
-                    <button 
-                        onClick={() => addToCart(productData._id, size)} 
-                        className="bg-black text-white px-8 py-3.5 text-xs sm:text-sm font-semibold uppercase tracking-wider rounded-md hover:bg-gray-800 active:bg-gray-900 transition cursor-pointer"
-                    >
-                        ADD TO CART
-                    </button>
+                    {((productData.stock !== undefined && productData.stock <= 0) || productData.inStock === false) ? (
+                        <button 
+                            disabled 
+                            className="bg-gray-200 text-gray-400 px-8 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-md cursor-not-allowed border border-gray-300"
+                        >
+                            OUT OF STOCK
+                        </button>
+                    ) : (
+                        <button 
+                            onClick={() => addToCart(productData._id, size)} 
+                            className="bg-black text-white px-8 py-3.5 text-xs sm:text-sm font-semibold uppercase tracking-wider rounded-md hover:bg-gray-800 active:bg-gray-900 transition cursor-pointer"
+                        >
+                            ADD TO CART
+                        </button>
+                    )}
 
                     <hr className="mt-8 border-gray-200 w-full" />
 

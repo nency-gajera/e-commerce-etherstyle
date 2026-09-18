@@ -20,6 +20,8 @@ const AddProduct = ({ token }) => {
     const [bestseller, setBestseller] = useState(false);
     const [sizes, setSizes] = useState([]);
 
+    const [stock, setStock] = useState("10");
+
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         try {
@@ -31,6 +33,7 @@ const AddProduct = ({ token }) => {
             formData.append("subCategory", subCategory);
             formData.append("bestseller", bestseller);
             formData.append("sizes", JSON.stringify(sizes));
+            formData.append("stock", stock);
 
             image1 && formData.append("image1", image1);
             image2 && formData.append("image2", image2);
@@ -48,6 +51,8 @@ const AddProduct = ({ token }) => {
                 setImage3(false);
                 setImage4(false);
                 setPrice('');
+                setStock('10');
+                setSizes([]);
                 getProductsData();
             } else {
                 toast.error(response.data.message);
@@ -104,7 +109,7 @@ const AddProduct = ({ token }) => {
                 <textarea onChange={(e) => setDescription(e.target.value)} value={description} placeholder="Write product description..." required rows={3} className="w-full px-3.5 py-2.5 border border-gray-300 rounded-md outline-none text-sm bg-white font-sans" />
             </div>
 
-            {/* Category, SubCategory & Price */}
+            {/* Category, SubCategory, Price & Stock */}
             <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <div className="flex-1">
                     <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Category</p>
@@ -127,17 +132,21 @@ const AddProduct = ({ token }) => {
                     <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Price (₹)</p>
                     <input onChange={(e) => setPrice(e.target.value)} value={price} type="number" placeholder="25" required className="w-full px-3.5 py-2.5 border border-gray-300 rounded-md outline-none text-sm bg-white" />
                 </div>
+                <div className="flex-1">
+                    <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Stock Qty</p>
+                    <input onChange={(e) => setStock(e.target.value)} value={stock} type="number" min="0" placeholder="10" required className="w-full px-3.5 py-2.5 border border-gray-300 rounded-md outline-none text-sm bg-white" />
+                </div>
             </div>
 
             {/* Product Sizes */}
             <div className="w-full">
-                <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Product Sizes</p>
-                <div className="flex gap-2">
+                <p className="font-semibold text-xs uppercase tracking-wider text-gray-700 mb-1.5">Product Available Sizes</p>
+                <div className="flex flex-wrap gap-2">
                     {['S', 'M', 'L', 'XL', 'XXL'].map(size => (
                         <div 
                             key={size} 
                             onClick={() => setSizes(prev => prev.includes(size) ? prev.filter(item => item !== size) : [...prev, size])}
-                            className={`px-3 py-1.5 border rounded-md cursor-pointer font-bold text-xs transition ${sizes.includes(size) ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`}
+                            className={`px-3.5 py-2 border rounded-xl cursor-pointer font-semibold text-xs transition ${sizes.includes(size) ? 'bg-black text-white border-black shadow-xs' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`}
                         >
                             {size}
                         </div>

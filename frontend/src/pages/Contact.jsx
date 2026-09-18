@@ -11,11 +11,7 @@ const Contact = () => {
             </div>
 
             <div className="my-10 flex flex-col justify-center md:flex-row gap-10 mb-28 items-center">
-                <img 
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80" 
-                    alt="Contact Etherstyle" 
-                    className="w-full md:max-w-[450px] rounded-2xl object-cover shadow-sm" 
-                />
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d238133.05964460803!2d72.82228589999998!3d21.159200149999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04e59411d1563%3A0xfe4558290938b042!2sSurat%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1774962009471!5m2!1sen!2sin" width="70%" height="400" loading="lazy"></iframe>
                 <div className="flex flex-col justify-center items-start gap-6 text-gray-600 text-sm">
                     <p className="font-bold text-lg text-gray-800">Our Store</p>
                     <p className="text-gray-500 leading-relaxed">
